@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"slices"
 	"strconv"
 	"strings"
 )
@@ -102,24 +103,75 @@ func LongestCommonPrefix(strs []string) string {
 // 5. 加一
 // 给定一个由整数组成的非空数组所表示的非负整数，在该数的基础上加一
 func PlusOne(digits []int) []int {
-	// TODO: implement
-	return nil
+	result := 0
+	for _, num := range digits {
+		result = result*10 + num
+	}
+	result = result + 1
+
+	var resultArr []int
+	for result > 0 {
+		resultArr = append(resultArr, result%10)
+		result = result / 10
+	}
+	for i, j := 0, len(resultArr)-1; i < j; i, j = i+1, j-1 {
+		resultArr[i], resultArr[j] = resultArr[j], resultArr[i]
+	}
+	return resultArr
 }
 
-// 6. 删除有序数组中的重复项
+// 6. 删除有序数组中的重复项 0 1 2
 // 给你一个有序数组 nums ，请你原地删除重复出现的元素，使每个元素只出现一次，返回删除后数组的新长度。
 // 不要使用额外的数组空间，你必须在原地修改输入数组并在使用 O(1) 额外空间的条件下完成。
 func RemoveDuplicates(nums []int) int {
-	// TODO: implement
-	return 0
+
+	n := len(nums)
+	if n == 0 {
+		return 0
+	}
+
+	i := 0
+	for j := 0; j < len(nums); j++ {
+		if nums[i] != nums[j] {
+			i++
+			nums[i] = nums[j]
+		}
+	}
+	return i + 1
+
 }
 
 // 7. 合并区间
 // 以数组 intervals 表示若干个区间的集合，其中单个区间为 intervals[i] = [starti, endi] 。
 // 请你合并所有重叠的区间，并返回一个不重叠的区间数组，该数组需恰好覆盖输入中的所有区间。
 func Merge(intervals [][]int) [][]int {
-	// TODO: implement
-	return nil
+	if len(intervals) <= 1 {
+		return intervals
+	}
+	slices.SortFunc(intervals, func(a, b []int) int {
+		return a[0] - b[0]
+	})
+
+	// 2. 初始化结果集，先放入第一个区间
+	res := [][]int{intervals[0]}
+
+	for i := 1; i < len(intervals); i++ {
+		curr := intervals[i]
+		// 获取结果集中最后一个区间的引用
+		last := &res[len(res)-1]
+
+		// 3. 判断是否重叠：当前区间的起点 <= 结果集中最后一个区间的终点
+		if curr[0] <= (*last)[1] {
+			// 如果重叠，更新结果集中最后一个区间的终点为两者的最大值
+			if curr[1] > (*last)[1] {
+				(*last)[1] = curr[1]
+			}
+		} else {
+			// 4. 如果不重叠，直接将当前区间加入结果集
+			res = append(res, curr)
+		}
+	}
+	return res
 }
 
 // 8. 两数之和
