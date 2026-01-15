@@ -1,0 +1,33 @@
+app:
+  name: blog
+  env: dev
+  http_addr: ":8080"
+  shutdown_timeout_sec: 15
+
+log:
+  level: info
+  format: json   # json/console
+  file: ""       # empty -> stdout
+
+mysql:
+  dsn: "root:123456@tcp(192.168.1.36:3306)/mall?charset=utf8mb4&parseTime=True&loc=Local"
+  max_open_conns: 50
+  max_idle_conns: 20
+  conn_max_lifetime_sec: 300
+
+redis:
+  addr: "192.168.1.36:6379"
+  password: ""
+  db: 0
+
+rabbitmq:
+  url: "amqp://admin:admin123@192.168.1.36:5672/"
+  exchange: "demo.exchange"
+  queue: "demo.queue"
+  routing_key: "demo.key"
+  consumer_tag: "demo-consumer"
+  prefetch: 20
+  concurrency: 4
+
+security:
+  jwt_secret: "change-me"
