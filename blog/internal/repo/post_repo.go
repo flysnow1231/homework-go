@@ -28,7 +28,7 @@ func (r *PostRepo) GetByUsername(ctx context.Context, userId int, page int, size
 		return nil, err
 	}
 
-	offset := page*size - 1
+	offset := (page - 1) * size
 	var list []model.Post
 	err = r.db.WithContext(ctx).Model(post).Where("user_id = ?", userId).
 		Order("created_at DESC").
