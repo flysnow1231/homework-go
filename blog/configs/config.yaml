@@ -1,6 +1,6 @@
 app:
   name: blog
-  env: dev
+  env: prod
   http_addr: ":8080"
   shutdown_timeout_sec: 15
 

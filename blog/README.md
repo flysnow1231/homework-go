@@ -67,3 +67,6 @@ curl -X POST http://localhost:8080/api/v1/pst/write \
 curl -X GET http://localhost:8080/api/v1/pst/1/2/5
 curl -X GET http://localhost:8080/api/v1/pst/1/2/5 \
 -H "token: kdiejfji393874"
+
+
+curl -X GET http://localhost:8080/healthz

@@ -12,6 +12,7 @@ const Token = "token"
 var NoAuthUri = map[string]bool{
 	"/api/v1/register":                  true,
 	"/api/v1/login/:username/:password": true,
+	"/healthz":                          true,
 }
 
 func JWTAuth(log *zap.Logger) gin.HandlerFunc {
