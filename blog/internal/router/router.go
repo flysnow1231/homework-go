@@ -17,6 +17,7 @@ type Deps struct {
 	Cfg    *config.Config
 	Health *handler.HealthHandler
 	User   *handler.UserHandler
+	Post   *handler.PostHandler
 }
 
 func New(d Deps) *gin.Engine {
@@ -29,6 +30,7 @@ func New(d Deps) *gin.Engine {
 	r.Use(middleware.RequestID())
 	r.Use(middleware.Recovery(d.Log))
 	r.Use(middleware.AccessLog(d.Log))
+	r.Use(middleware.JWTAuth(d.Log))
 	//r.Use(middleware.Timeout(8 * time.Second))
 
 	r.Use(cors.New(cors.Config{
@@ -49,7 +51,10 @@ func New(d Deps) *gin.Engine {
 	v1 := r.Group("/api/v1")
 	{
 		v1.POST("/register", d.User.Create)
-		v1.GET("/users/:username", d.User.Get)
+		v1.GET("/login/:username/:password", d.User.Login)
+		v1.POST("/pst/write", d.Post.AddPost)
+		v1.GET("/pst/:userid/:page/:size", d.Post.QueryPostByUser)
+
 	}
 
 	return r

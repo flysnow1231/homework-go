@@ -102,14 +102,19 @@ func (a *App) Start() error {
 	health := &handler.HealthHandler{ReadyFn: readyFn}
 
 	userRepo := repo.NewUserRepo(a.db)
-	userSvc := service.NewUserService(userRepo, a.prod)
-	userHandler := handler.NewUserHandler(userSvc)
+	userSvc := service.NewUserService(userRepo, a.prod, a.log)
+	userHandler := handler.NewUserHandler(userSvc, a.log)
+
+	postRepo := repo.NewPostRepo(a.db)
+	postSvc := service.NewPostService(postRepo, a.prod, a.log)
+	postHandler := handler.NewPostHandler(postSvc, a.log)
 
 	engine := router.New(router.Deps{
 		Log:    a.log,
 		Cfg:    a.cfg,
 		Health: health,
 		User:   userHandler,
+		Post:   postHandler,
 	})
 
 	a.httpSrv = &http.Server{

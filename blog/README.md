@@ -29,9 +29,41 @@ Edit `configs/config.yaml` or override with env:
 curl -X POST http://localhost:8080/api/v1/register \
 -H "Content-Type: application/json" \
 -d '{
-"username": "testuser",
-"password": "123456",
-"email": "testuser@example.com"
+"username": "trump",
+"password": "111222333",
+"email": "trump@example.com"
 }'
 
-curl -X GET http://localhost:8080/api/v1/users/testuser
+curl -X GET http://localhost:8080/api/v1/login/testuser
+curl -X GET http://localhost:8080/api/v1/login/trump/111222333
+
+curl -X POST http://localhost:8080/api/v1/pst/write \
+-H "Content-Type: application/json" \
+-H "token: kdiejfji393874" \
+-d '{
+"title": "Alice巡游记",
+"content": "Alice巡游记，这是第一篇博客",
+"userid": 1
+}'
+
+
+curl -X POST http://localhost:8080/api/v1/pst/write \
+-H "Content-Type: application/json" \
+-H "token: kdiejfji393874" \
+-d '{
+"title": "Alice巡游记第二章",
+"content": "Alice巡游记，这是第二篇博客",
+"userid": 1
+}'
+
+curl -X POST http://localhost:8080/api/v1/pst/write \
+-H "Content-Type: application/json" \
+-d '{
+"userid": 1,
+"page": "111222333",
+"size": "trump@example.com"
+}'
+
+curl -X GET http://localhost:8080/api/v1/pst/1/2/5
+curl -X GET http://localhost:8080/api/v1/pst/1/2/5 \
+-H "token: kdiejfji393874"
